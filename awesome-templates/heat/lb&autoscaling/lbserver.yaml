@@ -1,0 +1,69 @@
+heat_template_version: 2013-05-23
+description: A load-balancer server
+parameters:
+  image:
+    type: string
+    description: Image used for servers
+    #default: b7dab5af-0cec-427f-a765-72108aac01ac  #Cirros
+    default: 495c8028-31af-4247-adeb-4d88ed2b6283  #Vivid
+  key_name:
+    type: string
+    description: SSH key to connect to the servers
+    default: os_key2
+  flavor:
+    type: string
+    description: flavor used by the servers
+    #default: m1.tiny
+    default: m1.vivid
+  pool_id:
+    type: string
+    description: Pool to contact
+  metadata:
+    type: json
+  network:
+    type: string
+    description: Network used by the server
+    default: 2e60d1a8-f9b1-46a4-a345-bdcd8f849d6d
+
+resources:
+  LAMP_cfn_init_hook:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+        users:
+          - name: root
+            ssh-authorized-keys:
+               - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcV7ewWG2agiy3Cm0doVvtDrP4qbCbQ7XWbh1ZPykdN6HnQI/AkWSfCmiO4SxFn7wrqeEfDkRjZ+u9bI/65Mp6xMcDMbXg5oBSHhh+z2UaD2fM0DOGQU3kS96fnkAXCaeEPOYTzFBvilUDqnmeDaJ2XsIjVpAgZQJ1DAifl4niWioIWJi1xWyEI1vgQxBMjxMTAEvSgpM7qQP7AgNLjZINEiwGffrfulQfeYdSojK7nb6mxZEv+cH93lKPqdGqE58C7+/jB1+/m5yk7YBR0i9Eno9BwKOw7lovim/wcI+3JmyxtUWWzUwZy3A2ziS1WD0wvbOrvo20Wj22RWliuJMh
+        package_update: true
+        packages:
+          - apache2
+          - php5
+          - mysql-server
+          - mysql-common
+
+        write_files:
+          - path: /var/www/html/index.php
+            encoding: b64
+            content: PD9waHANCiAgICBwaHBpbmZvKCk7DQo/Pg==
+            owner: root:root
+            permissions: '0644'
+
+  lamp:
+    type: OS::Nova::Server
+    properties:
+      name: LAMP
+      flavor: {get_param: flavor}
+      image: {get_param: image}
+      key_name: {get_param: key_name}
+      metadata: {get_param: metadata}
+      networks: [{network: {get_param: network} }]
+      user_data_format: RAW
+      user_data:
+        get_resource: LAMP_cfn_init_hook
+
+  member:
+    type: OS::Neutron::PoolMember
+    properties:
+      pool_id: {get_param: pool_id}
+      address: {get_attr: [lamp, first_address]}
+      protocol_port: 80
