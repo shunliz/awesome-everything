@@ -1,6 +1,6 @@
 A aowsome list of resources, links, papers........
 
-*[aowsome 模板](awesome-template/README.md)
+*[aowsome 模板](awesome-templates/README.md)
 
 *[aowsome 深度视觉](Awesome_Deep_Vision.md)
 
