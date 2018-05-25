@@ -20,9 +20,8 @@ A aowsome list of resources, links, papers........
 
 *[aowsome 容器en](Docker_en.md)
 
-*[aowsome 电子书](free-programming-books)
-
-*[aowsome 电子书](free-programming-books-zh)
+*[aowsome 电子书](free-programming-books.md)
+*[aowsome 电子书](free-programming-books-zh.md)
 
 
 
