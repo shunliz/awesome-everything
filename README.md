@@ -2,7 +2,7 @@ A aowsome list of resources, links, papers........
 
 *[aowsome 模板](awesome-template/README.md)
 
-*[aowsome 深度视觉](Awesome_Deep Vision.md)
+*[aowsome 深度视觉](Awesome_Deep_Vision.md)
 
 *[aowsome Tensorflow](Awesome_Tensorflow.md)
 
