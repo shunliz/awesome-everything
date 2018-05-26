@@ -24,6 +24,8 @@ A aowsome list of resources, links, papers........
 
 *[aowsome 电子书](free-programming-books-zh.md)
 
+*[aowsome 可扩展性](awesome-scalability.md)
+
 
 
 
